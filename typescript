@@ -1,0 +1,1773 @@
+Script started on Wed 03 Mar 2021 04:18:54 PM CST
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# cat pom.xml 
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: Solo POM.
+    Version: 3.18.3.101, Sep 9, 2020
+    Author: <a href="http://88250.b3log.org">Liang Ding</a>
+    Author: <a href="http://www.annpeter.cn">Ann Peter</a>
+    Author: <a href="http://vanessa.b3log.org">Vanessa</a>
+    Author: <a href="https://ld246.com/member/nanolikeyou">nanolikeyou</a>
+    Author: <a href="https://ld246.com/member/hzchendou">hzchendou</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo</artifactId>
+    <packaging>jar</packaging>
+    <name>Solo</name>
+    <version>4.3.1</version>
+    <description>
+        一款小而美的博客系统，专为程序员设计。
+    </description>
+    <inceptionYear>2010</inceptionYear>
+
+    <organization>
+        <name>B3log</name>
+        <url>https://b3log.org</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>木兰宽松许可证, 第2版</name>
+            <url>http://license.coscl.org.cn/MulanPSL2</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>d@b3log.org</id>
+            <name>Liang Ding</name>
+            <email>d@b3log.org</email>
+            <url>http://88250.b3log.org</url>
+            <roles>
+                <role>Lead</role>
+                <role>Initial Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>https://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+
+        <developer>
+            <id>v@b3log.org</id>
+            <name>Liyuan Li</name>
+            <email>v@b3log.org</email>
+            <url>http://vanessa.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>https://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/88250/solo/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/88250/solo</url>
+    </scm>
+
+    <properties>
+        <org.b3log.latke.version>3.4.10</org.b3log.latke.version>
+
+        <jsoup.version>1.12.1</jsoup.version>
+        <flexmark.version>0.50.40</flexmark.version>
+        <commons-cli.version>1.3.1</commons-cli.version>
+        <emoji-java.version>5.1.0</emoji-java.version>
+        <jodd.version>5.0.13</jodd.version>
+        <owasp.version>1.2.2</owasp.version>
+        <snakeyaml.version>1.18</snakeyaml.version>
+        <user-agent-utils.version>1.21</user-agent-utils.version>
+
+        <license-maven-plugin.version>3.0</license-maven-plugin.version>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
+        <testng.version>7.1.0</testng.version>
+
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-core</artifactId>
+            <version>${org.b3log.latke.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>redis.clients</groupId>
+                    <artifactId>jedis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-mysql</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-h2</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>${flexmark.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-pdf-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-youtrack-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-jira-converter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>${emoji-java.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>${commons-cli.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-http</artifactId>
+            <version>${jodd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>${owasp.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${user-agent-utils.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                    <exclude>lib/</exclude>
+                    <exclude>docker/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${coveralls-maven-plugin.version}</version>
+                <configuration>
+                    <repoToken>QZ1zzxOqOt1mtjyqmvzFJU5YW0kdIuExV</repoToken>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license-maven-plugin.version}</version>
+                <configuration>
+                    <header>src/main/resources/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>**/src/*/java/**/*.java</include>
+                        <include>**/src/*/resources/js/*.js</include>
+                        <include>**/src/*/resources/scss/*.scss</include>
+                        <include>**/src/*/resources/**/*.ftl</include>
+                        <include>**/src/*/resources/skins/*/js/*.js</include>
+                        <include>**/src/*/resources/skins/**/*.scss</include>
+                        <include>**/src/*/resources/skins/**/*.properties</include>
+                        <include>**/src/*/resources/plugins/*/js/*.js</include>
+                        <include>**/src/*/resources/plugins/*/css/*.css</include>
+                        <include>**/src/*/resources/plugins/*/*.properties</include>
+                        <include>**/src/*/resources/js/admin/*.js</include>
+                        <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/resources/*.xml</include>
+                        <include>**/src/test/resources/**/*</include>
+                        <include>**/src/*/resources/docker/*</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/src/main/java/**/package-info.java</exclude>
+                        <exclude>**/src/*/resources/js/lib/*.js</exclude>
+                        <include>**/src/*/resources/js/*.min.js</include>
+                        <include>**/src/*/resources/js/admin/*.min.js</include>
+                        <include>**/src/*/resources/skins/*/js/*.min.js</include>
+                        <include>**/src/*/resources/skins/*/css/*.css</include>
+                        <exclude>**/src/main/java/com/**/*.java</exclude>
+                    </excludes>
+
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                        <scss>SLASHSTAR_STYLE</scss>
+                    </mapping>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>2010-present</year>
+                        <devTeam>b3log.org</devTeam>
+                    </properties>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/bin.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 需要打 jar 部署的话注释掉上面的配置，启用下面这段配置
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+
+        </plugins>
+
+        <finalName>solo</finalName>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+        </profile>
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>aliyun</id>
+                    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+                </repository>
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>aliyun</id>
+                    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+</project>
+
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# sz pom.xml 
+rz**B00000000000000�*A    �pom.xml 14712 14017641067 100644 0 1 14712 kл*A
+    F�<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: Solo POM.
+    Version: 3.18.3.101, Sep 9, 2020
+    Author: <a href="http://88250.b3log.org">Liang Ding</a>
+    Author: <a href="http://www.annpeter.cn">Ann Peter</a>
+    Author: <a href="http://vanessa.b3log.org">Vanessa</a>
+    Author: <a href="https://ld246.com/member/nanolikeyou">nanolikeyou</a>
+    Author: <a href="https://ld246.com/member/hzchendou">hzchendou</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo</artifactId>
+    <packaging>jar</packaging>
+    <name>Solo</name>
+    <version>4.3.1</version>
+    <description>
+        一款小而美的博客系统，��为程序�ј设计。
+    </description>
+    <inceptionYear>2010</inceptionYear>
+
+    <organization>
+        <name>B3liV�og</name>
+        <url>https://b3log.org</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>木兰宽松许可证, 第2版</name>
+            <url>http://license.coscl.org.cn/MulanPSL2</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>d@b3log.org</id>
+            <name>Liang Ding</name>
+            <email>d@b3log.org</email>
+            <url>http://88250.b3log.org</url>
+            <roles>
+                <role>Lead</role>
+                <role>Initial Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>https://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+
+        <developer>
+            <id>v@b3log.org</id>
+            <name>Liyuan Li</name>
+            <email>v@b3log.org</email>
+            <url>http://vanessa.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log<i��/organization>
+            <organizationUrl>https://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/88250/solo/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/88250/solo</url>
+    </scm>
+
+    <properties>
+        <org.b3log.latke.version>3.4.10</org.b3log.latke.version>
+
+        <jsoup.version>1.12.1</jsoup.version>
+        <flexmark.version>0.50.40</flexmark.version>
+        <commons-cli.version>1.3.1</commons-cli.version>
+        <emoji-java.version>5.1.0</emoji-java.version>
+        <jodd.version>5.0.13</jodd.version>
+        <owasp.version>1.2.2</owasp.version>
+        <snakeyaml.version>1.18</snakeyaml.version>
+        <user-agent-utils.version>1.21</user-agent-utils.version>
+
+        <license-maven-plugin.version>3.0</license-maven-plugin.version>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+  i��      <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
+        <testng.version>7.1.0</testng.version>
+
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-core</artifactId>
+            <version>${org.b3log.latke.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>redis.clients</groupId>
+                    <artifactId>jedis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-mysql</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dei�Upendency>
+
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-h2</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>${flexmark.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-pdf-converter</artifactId>
+                </exclusion>
+                <exclusion>
+              i�      <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-youtrack-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-jira-converter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>${emoji-java.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>${commons-cli.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jodd</groui}�pId>
+            <artifactId>jodd-http</artifactId>
+            <version>${jodd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>${owasp.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${user-agent-utils.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                    <exclude>lib/</exclude>
+                    <exclude>docker/</exclude>
+                </excludes>
+          i�  </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${coveralls-maven-plugin.version}</version>
+                <configuration>
+                    <repoToken>QZ1zzxOqOt1mtjyqmvzFJU5YW0kdIuExV</repoToken>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+      i          <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license-maven-plugin.version}</version>
+                <configuration>
+                    <header>src/main/resources/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>**/src/*/java/**/*.java</include>
+                        <include>**/src/*/resources/js/*.js</include>
+                        <include>**/src/*/resources/scss/*.scss</include>
+  i�                      <include>**/src/*/resources/**/*.ftl</include>
+                        <include>**/src/*/resources/skins/*/js/*.js</include>
+                        <include>**/src/*/resources/skins/**/*.scss</include>
+                        <include>**/src/*/resources/skins/**/*.properties</include>
+                        <include>**/src/*/resources/plugins/*/js/*.js</include>
+                        <include>**/src/*/resources/plugins/*/css/*.css</include>
+                        <include>**/src/*/resources/plugins/*/*.properties</include>
+                        <include>**/src/*/resources/js/admin/*.js</include>
+                        <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/resources/*.xml</include>
+                        <include>**/src/test/resources/**/*</include>
+                        <include>**/src/*/resources/docker/*</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/src/main/i�java/**/package-info.java</exclude>
+                        <exclude>**/src/*/resources/js/lib/*.js</exclude>
+                        <include>**/src/*/resources/js/*.min.js</include>
+                        <include>**/src/*/resources/js/admin/*.min.js</include>
+                        <include>**/src/*/resources/skins/*/js/*.min.js</include>
+                        <include>**/src/*/resources/skins/*/css/*.css</include>
+                        <exclude>**/src/main/java/com/**/*.java</exclude>
+                    </excludes>
+
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                        <scss>SLASHSTAR_STYLE</scss>
+                    </mapping>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>2010-present</year>
+                        <devTeam>b3log.org</devTeam>
+                    </properties>
+                    <enci��oding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+      i\�          <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/bin.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 需要�� jar 部署的话注释掉上面的配置，�Я用下面这段配置
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                i	        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+
+        </plugins>
+
+        <finalName>solo</finalName>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+        </profile>
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>aliyun</id>
+                    <url>http://maven.aliyun.com/nexus/content/groups/pi�ublic</url>
+                </repository>
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>aliyun</id>
+                    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+</project>
+
+hۢ*Ax9  p}**B0800000000022d�OO[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# sz pom.xml 
+rz**B00000000000000�*A    �pom.xml 14712 14017641067 100644 0 1 14712 kл*A
+    F�<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: Solo POM.
+    Version: 3.18.3.101, Sep 9, 2020
+    Author: <a href="http://88250.b3log.org">Liang Ding</a>
+    Author: <a href="http://www.annpeter.cn">Ann Peter</a>
+    Author: <a href="http://vanessa.b3log.org">Vanessa</a>
+    Author: <a href="https://ld246.com/member/nanolikeyou">nanolikeyou</a>
+    Author: <a href="https://ld246.com/member/hzchendou">hzchendou</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo</artifactId>
+    <packaging>jar</packaging>
+    <name>Solo</name>
+    <version>4.3.1</version>
+    <description>
+        一款小而美的博客系统，��为程序�ј设计。
+    </description>
+    <inceptionYear>2010</inceptionYear>
+
+    <organization>
+        <name>B3liV�og</name>
+        <url>https://b3log.org</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>木兰宽松许可证, 第2版</name>
+            <url>http://license.coscl.org.cn/MulanPSL2</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>d@b3log.org</id>
+            <name>Liang Ding</name>
+            <email>d@b3log.org</email>
+            <url>http://88250.b3log.org</url>
+            <roles>
+                <role>Lead</role>
+                <role>Initial Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>https://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+
+        <developer>
+            <id>v@b3log.org</id>
+            <name>Liyuan Li</name>
+            <email>v@b3log.org</email>
+            <url>http://vanessa.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log<i��/organization>
+            <organizationUrl>https://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/88250/solo/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/88250/solo</url>
+    </scm>
+
+    <properties>
+        <org.b3log.latke.version>3.4.10</org.b3log.latke.version>
+
+        <jsoup.version>1.12.1</jsoup.version>
+        <flexmark.version>0.50.40</flexmark.version>
+        <commons-cli.version>1.3.1</commons-cli.version>
+        <emoji-java.version>5.1.0</emoji-java.version>
+        <jodd.version>5.0.13</jodd.version>
+        <owasp.version>1.2.2</owasp.version>
+        <snakeyaml.version>1.18</snakeyaml.version>
+        <user-agent-utils.version>1.21</user-agent-utils.version>
+
+        <license-maven-plugin.version>3.0</license-maven-plugin.version>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+  i��      <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
+        <testng.version>7.1.0</testng.version>
+
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-core</artifactId>
+            <version>${org.b3log.latke.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>redis.clients</groupId>
+                    <artifactId>jedis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-mysql</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dei�Upendency>
+
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-h2</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>${flexmark.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-pdf-converter</artifactId>
+                </exclusion>
+                <exclusion>
+              i�      <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-youtrack-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-jira-converter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>${emoji-java.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>${commons-cli.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jodd</groui}�pId>
+            <artifactId>jodd-http</artifactId>
+            <version>${jodd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>${owasp.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${user-agent-utils.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                    <exclude>lib/</exclude>
+                    <exclude>docker/</exclude>
+                </excludes>
+          i�  </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${coveralls-maven-plugin.version}</version>
+                <configuration>
+                    <repoToken>QZ1zzxOqOt1mtjyqmvzFJU5YW0kdIuExV</repoToken>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+      i          <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license-maven-plugin.version}</version>
+                <configuration>
+                    <header>src/main/resources/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>**/src/*/java/**/*.java</include>
+                        <include>**/src/*/resources/js/*.js</include>
+                        <include>**/src/*/resources/scss/*.scss</include>
+  i�                      <include>**/src/*/resources/**/*.ftl</include>
+                        <include>**/src/*/resources/skins/*/js/*.js</include>
+                        <include>**/src/*/resources/skins/**/*.scss</include>
+                        <include>**/src/*/resources/skins/**/*.properties</include>
+                        <include>**/src/*/resources/plugins/*/js/*.js</include>
+                        <include>**/src/*/resources/plugins/*/css/*.css</include>
+                        <include>**/src/*/resources/plugins/*/*.properties</include>
+                        <include>**/src/*/resources/js/admin/*.js</include>
+                        <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/resources/*.xml</include>
+                        <include>**/src/test/resources/**/*</include>
+                        <include>**/src/*/resources/docker/*</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/src/main/i�java/**/package-info.java</exclude>
+                        <exclude>**/src/*/resources/js/lib/*.js</exclude>
+                        <include>**/src/*/resources/js/*.min.js</include>
+                        <include>**/src/*/resources/js/admin/*.min.js</include>
+                        <include>**/src/*/resources/skins/*/js/*.min.js</include>
+                        <include>**/src/*/resources/skins/*/css/*.css</include>
+                        <exclude>**/src/main/java/com/**/*.java</exclude>
+                    </excludes>
+
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                        <scss>SLASHSTAR_STYLE</scss>
+                    </mapping>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>2010-present</year>
+                        <devTeam>b3log.org</devTeam>
+                    </properties>
+                    <enci��oding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+      i\�          <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/bin.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 需要�� jar 部署的话注释掉上面的配置，�Я用下面这段配置
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                i	        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+
+        </plugins>
+
+        <finalName>solo</finalName>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+        </profile>
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>aliyun</id>
+                    <url>http://maven.aliyun.com/nexus/content/groups/pi�ublic</url>
+                </repository>
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>aliyun</id>
+                    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+</project>
+
+hۢ*Ax9  p}**B0800000000022d�OO[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# ca[K[K
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# cat pom.xml 
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    Description: Solo POM.
+    Version: 3.18.3.101, Sep 9, 2020
+    Author: <a href="http://88250.b3log.org">Liang Ding</a>
+    Author: <a href="http://www.annpeter.cn">Ann Peter</a>
+    Author: <a href="http://vanessa.b3log.org">Vanessa</a>
+    Author: <a href="https://ld246.com/member/nanolikeyou">nanolikeyou</a>
+    Author: <a href="https://ld246.com/member/hzchendou">hzchendou</a>
+-->
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <groupId>org.b3log</groupId>
+    <artifactId>solo</artifactId>
+    <packaging>jar</packaging>
+    <name>Solo</name>
+    <version>4.3.1</version>
+    <description>
+        一款小而美的博客系统，专为程序员设计。
+    </description>
+    <inceptionYear>2010</inceptionYear>
+
+    <organization>
+        <name>B3log</name>
+        <url>https://b3log.org</url>
+    </organization>
+
+    <licenses>
+        <license>
+            <name>木兰宽松许可证, 第2版</name>
+            <url>http://license.coscl.org.cn/MulanPSL2</url>
+        </license>
+    </licenses>
+
+    <developers>
+        <developer>
+            <id>d@b3log.org</id>
+            <name>Liang Ding</name>
+            <email>d@b3log.org</email>
+            <url>http://88250.b3log.org</url>
+            <roles>
+                <role>Lead</role>
+                <role>Initial Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>https://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+
+        <developer>
+            <id>v@b3log.org</id>
+            <name>Liyuan Li</name>
+            <email>v@b3log.org</email>
+            <url>http://vanessa.b3log.org</url>
+            <roles>
+                <role>Committer</role>
+            </roles>
+            <organization>B3log</organization>
+            <organizationUrl>https://b3log.org</organizationUrl>
+            <timezone>+8</timezone>
+        </developer>
+    </developers>
+
+    <issueManagement>
+        <system>GitHub Issues</system>
+        <url>https://github.com/88250/solo/issues</url>
+    </issueManagement>
+
+    <scm>
+        <url>https://github.com/88250/solo</url>
+    </scm>
+
+    <properties>
+        <org.b3log.latke.version>3.4.10</org.b3log.latke.version>
+
+        <jsoup.version>1.12.1</jsoup.version>
+        <flexmark.version>0.50.40</flexmark.version>
+        <commons-cli.version>1.3.1</commons-cli.version>
+        <emoji-java.version>5.1.0</emoji-java.version>
+        <jodd.version>5.0.13</jodd.version>
+        <owasp.version>1.2.2</owasp.version>
+        <snakeyaml.version>1.18</snakeyaml.version>
+        <user-agent-utils.version>1.21</user-agent-utils.version>
+
+        <license-maven-plugin.version>3.0</license-maven-plugin.version>
+        <maven-surefire-plugin.version>2.22.1</maven-surefire-plugin.version>
+        <coveralls-maven-plugin.version>4.3.0</coveralls-maven-plugin.version>
+        <jacoco-maven-plugin.version>0.8.2</jacoco-maven-plugin.version>
+        <testng.version>7.1.0</testng.version>
+
+        <maven.compiler.target>1.8</maven.compiler.target>
+        <maven.compiler.source>1.8</maven.compiler.source>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+    </properties>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-core</artifactId>
+            <version>${org.b3log.latke.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>redis.clients</groupId>
+                    <artifactId>jedis</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-mysql</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.b3log</groupId>
+            <artifactId>latke-repository-h2</artifactId>
+            <version>${org.b3log.latke.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.testng</groupId>
+            <artifactId>testng</artifactId>
+            <version>${testng.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>${jsoup.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vladsch.flexmark</groupId>
+            <artifactId>flexmark-all</artifactId>
+            <version>${flexmark.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-pdf-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-youtrack-converter</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>com.vladsch.flexmark</groupId>
+                    <artifactId>flexmark-jira-converter</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>com.vdurmont</groupId>
+            <artifactId>emoji-java</artifactId>
+            <version>${emoji-java.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.json</groupId>
+                    <artifactId>json</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <dependency>
+            <groupId>commons-cli</groupId>
+            <artifactId>commons-cli</artifactId>
+            <version>${commons-cli.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jodd</groupId>
+            <artifactId>jodd-http</artifactId>
+            <version>${jodd.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.owasp.encoder</groupId>
+            <artifactId>encoder</artifactId>
+            <version>${owasp.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.yaml</groupId>
+            <artifactId>snakeyaml</artifactId>
+            <version>${snakeyaml.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>eu.bitwalker</groupId>
+            <artifactId>UserAgentUtils</artifactId>
+            <version>${user-agent-utils.version}</version>
+        </dependency>
+
+    </dependencies>
+
+    <build>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <excludes>
+                    <exclude>etc/</exclude>
+                    <exclude>lib/</exclude>
+                    <exclude>docker/</exclude>
+                </excludes>
+            </resource>
+        </resources>
+
+        <plugins>
+            <plugin>
+                <groupId>org.eluder.coveralls</groupId>
+                <artifactId>coveralls-maven-plugin</artifactId>
+                <version>${coveralls-maven-plugin.version}</version>
+                <configuration>
+                    <repoToken>QZ1zzxOqOt1mtjyqmvzFJU5YW0kdIuExV</repoToken>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>org.jacoco</groupId>
+                <artifactId>jacoco-maven-plugin</artifactId>
+                <version>${jacoco-maven-plugin.version}</version>
+                <executions>
+                    <execution>
+                        <id>prepare-agent</id>
+                        <goals>
+                            <goal>prepare-agent</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>${maven-surefire-plugin.version}</version>
+                <configuration>
+                    <useSystemClassLoader>false</useSystemClassLoader>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <groupId>com.mycila</groupId>
+                <artifactId>license-maven-plugin</artifactId>
+                <version>${license-maven-plugin.version}</version>
+                <configuration>
+                    <header>src/main/resources/etc/header.txt</header>
+                    <quiet>false</quiet>
+                    <failIfMissing>true</failIfMissing>
+                    <aggregate>true</aggregate>
+                    <strictCheck>true</strictCheck>
+                    <includes>
+                        <include>**/src/*/java/**/*.java</include>
+                        <include>**/src/*/resources/js/*.js</include>
+                        <include>**/src/*/resources/scss/*.scss</include>
+                        <include>**/src/*/resources/**/*.ftl</include>
+                        <include>**/src/*/resources/skins/*/js/*.js</include>
+                        <include>**/src/*/resources/skins/**/*.scss</include>
+                        <include>**/src/*/resources/skins/**/*.properties</include>
+                        <include>**/src/*/resources/plugins/*/js/*.js</include>
+                        <include>**/src/*/resources/plugins/*/css/*.css</include>
+                        <include>**/src/*/resources/plugins/*/*.properties</include>
+                        <include>**/src/*/resources/js/admin/*.js</include>
+                        <include>**/src/*/resources/*.properties</include>
+                        <include>**/src/*/resources/*.xml</include>
+                        <include>**/src/test/resources/**/*</include>
+                        <include>**/src/*/resources/docker/*</include>
+                    </includes>
+                    <excludes>
+                        <exclude>**/src/main/java/**/package-info.java</exclude>
+                        <exclude>**/src/*/resources/js/lib/*.js</exclude>
+                        <include>**/src/*/resources/js/*.min.js</include>
+                        <include>**/src/*/resources/js/admin/*.min.js</include>
+                        <include>**/src/*/resources/skins/*/js/*.min.js</include>
+                        <include>**/src/*/resources/skins/*/css/*.css</include>
+                        <exclude>**/src/main/java/com/**/*.java</exclude>
+                    </excludes>
+
+                    <useDefaultExcludes>true</useDefaultExcludes>
+                    <mapping>
+                        <java>SLASHSTAR_STYLE</java>
+                        <scss>SLASHSTAR_STYLE</scss>
+                    </mapping>
+                    <useDefaultMapping>true</useDefaultMapping>
+                    <properties>
+                        <year>2010-present</year>
+                        <devTeam>b3log.org</devTeam>
+                    </properties>
+                    <encoding>UTF-8</encoding>
+                </configuration>
+                <executions>
+                    <execution>
+                        <phase>generate-sources</phase>
+                        <goals>
+                            <goal>format</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                            <addClasspath>true</addClasspath>
+                            <classpathPrefix>lib/</classpathPrefix>
+                        </manifest>
+                    </archive>
+                </configuration>
+            </plugin>
+
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <descriptors>
+                        <descriptor>src/assembly/bin.xml</descriptor>
+                    </descriptors>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+
+            <!-- 需要打 jar 部署的话注释掉上面的配置，启用下面这段配置
+            <plugin>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <configuration>
+                    <appendAssemblyId>false</appendAssemblyId>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.b3log.solo.Server</mainClass>
+                        </manifest>
+                    </archive>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>assembly</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            -->
+
+        </plugins>
+
+        <finalName>solo</finalName>
+    </build>
+
+    <profiles>
+        <profile>
+            <id>ci</id>
+        </profile>
+
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <repositories>
+                <repository>
+                    <id>aliyun</id>
+                    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+                </repository>
+            </repositories>
+
+            <pluginRepositories>
+                <pluginRepository>
+                    <id>aliyun</id>
+                    <url>http://maven.aliyun.com/nexus/content/groups/public</url>
+                </pluginRepository>
+            </pluginRepositories>
+        </profile>
+    </profiles>
+
+</project>
+
+[root@VM-0-15-centos solo]# clear
+[H[J[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# hostname -I
+172.16.0.15 172.17.0.1 172.18.0.1 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# cd ..
+[root@VM-0-15-centos ~]# ls
+[0m[01;31mgitlab-ce-10.0.0-ce.0.el7.x86_64.rpm[0m  [01;34mharbor[0m  [01;31mharbor-offline-installer-v1.8.4.tgz[0m  [01;34mmyrepo[0m  [01;34msolo[0m  [01;34msolo.bak[0m
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# cd solo
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# cd scripts/
+[root@VM-0-15-centos scripts]# ls
+docker-restart.sh
+[root@VM-0-15-centos scripts]# cd ..
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# cd src/
+[root@VM-0-15-centos src]# ls
+[0m[01;34massembly[0m  [01;34mmain[0m  [01;34mtest[0m
+[root@VM-0-15-centos src]# cd ..
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# vim pom.xml 
+[2;1H▽[6n[2;1H  [1;1H[1;31r[?25h[?8c[?25h[?0c[27m[24m[0m[H[J[?25l[?1c[31;1H"pom.xml" 394L, 14712C[1;1H[1m[36m<?[0m[1m[32mxml version[0m=[1m[35m"1.0"[0m[1m[32m encoding[0m=[1m[35m"UTF-8"[0m[1m[36m?>
+<!--
+    Description: Solo POM.
+    Version: 3.18.3.101, Sep 9, 2020
+    Author: <a href="http://88250.b3log.org">Liang Ding</a>
+    Author: <a href="http://www.annpeter.cn">Ann Peter</a>
+    Author: <a href="http://vanessa.b3log.org">Vanessa</a>
+    Author: <a href="https://ld246.com/member/nanolikeyou">nanolikeyou</a>
+    Author: <a href="https://ld246.com/member/hzchendou">hzchendou</a>
+-->
+<project [0m[1m[32mxmlns[0m=[1m[35m"http://maven.apache.org/POM/4.0.0"[0m
+[1m[36m         [0m[1m[32mxmlns[0m[1m[36m:[0m[1m[32mxsi[0m=[1m[35m"http://www.w3.org/2001/XMLSchema-instance"[0m
+[1m[36m         [0m[1m[32mxsi[0m[1m[36m:[0m[1m[32mschemaLocation[0m=[1m[35m"http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd"[0m[1m[36m>
+[0m    [1m[36m<modelVersion>[0m4.0.0[1m[36m</modelVersion>
+[0m    [1m[36m<groupId>[0morg.b3log[1m[36m</groupId>
+[0m    [1m[36m<artifactId>[0msolo[1m[36m</artifactId>
+[0m    [1m[36m<packaging>[0mjar[1m[36m</packaging>
+[0m    [1m[36m<name>[0mSolo[1m[36m</name>
+[0m    [1m[36m<version>[0m4.3.1[1m[36m</version>
+[0m    [1m[36m<description>[0m[21;9H一款小而美的博客系统，专为程序员设计。
+    [1m[36m</description>
+[0m    [1m[36m<inceptionYear>[0m2010[1m[36m</inceptionYear>[25;5H<organization>[26;9H<name>[0mB3log[1m[36m</name>[27;9H<url>[0mhttps://b3log.org[1m[36m</url>
+[0m    [1m[36m</organization>[30;5H<licenses>[0m[31;104H1,1[11CTop[1;1H[?25h[?0c[?25l[?1c[31;104H2[2;1H[?25h[?0c[?25l[?1c[31;104H3[3;1H[?25h[?0c[?25l[?1c[31;104H4[4;1H[?25h[?0c[?25l[?1c[31;104H5[5;1H[?25h[?0c[?25l[?1c[31;104H6[6;1H[?25h[?0c[?25l[?1c[31;104H7[7;1H[?25h[?0c[?25l[?1c[31;104H8[8;1H[?25h[?0c[?25l[?1c[31;104H9[9;1H[?25h[?0c[?25l[?1c[31;104H10,1[10;1H[?25h[?0c[?25l[?1c[31;105H1[11;1H[?25h[?0c[?25l[?1c[31;105H2[12;1H[?25h[?0c[?25l[?1c[31;105H3[13;1H[?25h[?0c[?25l[?1c[31;105H4[14;1H[?25h[?0c[?25l[?1c[31;105H5[15;1H[?25h[?0c[?25l[?1c[31;105H6[16;1H[?25h[?0c[?25l[?1c[31;105H7[17;1H[?25h[?0c[?25l[?1c[31;105H8[18;1H[?25h[?0c[?25l[?1c[31;105H9[19;1H[?25h[?0c[?25l[?1c[31;104H20[20;1H[?25h[?0c[?25l[?1c[31;105H1[21;1H[?25h[?0c[?25l[?1c[31;105H2[22;1H[?25h[?0c[?25l[?1c[31;105H1[21;1H[?25h[?0c[?25l[?1c[31;105H0[20;1H[?25h[?0c[?25l[?1c[31;104H19[19;1H[?25h[?0c[?25l[?1c[31;105H8[18;1H[?25h[?0c[?25l[?1c[31;105H7[17;1H[?25h[?0c[?25l[?1c[31;105H6[16;1H[?25h[?0c[?25l[?1c[31;105H7[17;1H[?25h[?0c[?25l[?1c[31;107H2[17;2H[?25h[?0c[?25l[?1c[31;107H3[17;3H[?25h[?0c[?25l[?1c[31;107H4[17;4H[?25h[?0c[?25l[?1c[31;107H5[17;5H[?25h[?0c[?25l[?1c[31;107H6[17;6H[?25h[?0c[?25l[?1c[31;107H7[17;7H[?25h[?0c[?25l[?1c[31;107H8[17;8H[?25h[?0c[?25l[?1c[31;107H9[17;9H[?25h[?0c[?25l[?1c[31;107H10[17;10H[?25h[?0c[?25l[?1c[31;108H1[17;11H[?25h[?0c[?25l[?1c[31;108H2[17;12H[?25h[?0c[?25l[?1c[31;108H3[17;13H[?25h[?0c[?25l[?1c[31;108H4[17;14H[?25h[?0c[?25l[?1c[31;108H5[17;15H[?25h[?0c[?25l[?1c[31;108H6[17;16H[?25h[?0c[?25l[?1c[31;108H7[17;17H[?25h[?0c[?25l[?1c[31;108H8[17;18H[?25h[?0c[?25l[?1c[31;1H[1m-- INSERT --[0m[31;13H[K[31;104H17,19[9CTop[17;19H[?25h[?0c[?25l[?1c[1m[36m</packaging>[0m[17;30H[K[31;108H8[17;18H[?25h[?0c[?25l[?1c[1m[36m</packaging>[0m[17;29H[K[31;108H7[17;17H[?25h[?0c[?25l[?1c[1m[36m</packaging>[0m[17;28H[K[31;108H6[17;16H[?25h[?0c[?25l[?1cw[1m[36m</packaging>[0m[31;108H7[17;17H[?25h[?0c[?25l[?1ca[1m[36m</packaging>[0m[31;108H8[17;18H[?25h[?0c[?25l[?1cr[1m[36m</packaging>[0m[31;108H9[17;19H[?25h[?0c[31;1H[K[17;18H[?25l[?1c[31;104H17,18[9CTop[17;18H[?25h[?0c[?25l[?1c[31;104H[K[31;1H:[?25h[?0cw[?25l[?1c[?25h[?0cq[?25l[?1c[?25h[?0c[?25l[?1c"pom.xml" 394L, 14712C written[?25h[?0c
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# cd ..
+[root@VM-0-15-centos ~]# ls
+[0m[01;31mgitlab-ce-10.0.0-ce.0.el7.x86_64.rpm[0m  [01;34mharbor[0m  [01;31mharbor-offline-installer-v1.8.4.tgz[0m  [01;34mmyrepo[0m  [01;34msolo[0m  [01;34msolo.bak[0m
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# 
+[root@VM-0-15-centos ~]# cd solo
+[root@VM-0-15-centos solo]# ls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# git init 
+Reinitialized existing Git repository in /root/solo/.git/
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# git remote -v 
+origin	https://gitee.com/dl88250/solo.git (fetch)
+origin	https://gitee.com/dl88250/solo.git (push)
+[root@VM-0-15-centos solo]# git remote add origin http://172.16.0.15:8888/root/myrepo.git
+fatal: remote origin already exists.
+[root@VM-0-15-centos solo]# git remote add origin http://172.16.0.15:8888/root/myrepo.git[Kgit remote rm origin
+[root@VM-0-15-centos solo]# git remote rm originadd origin http://172.16.0.15:8888/root/myrepo.git
+[root@VM-0-15-centos solo]# git remote -v 
+origin	http://172.16.0.15:8888/root/myrepo.git (fetch)
+origin	http://172.16.0.15:8888/root/myrepo.git (push)
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# lls
+bash: lls: command not found
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# push [K[K[K[K[Kgit addm[K .
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# 
+[root@VM-0-15-centos solo]# git commit -m ''[Cv'1'
+[master 2d41866] v1
+ 2 files changed, 1705 insertions(+), 1 deletion(-)
+ create mode 100644 typescript
+[root@VM-0-15-centos solo]# git [K[K[K[Kls
+CHANGE_LOGS_2010-2019.html  Dockerfile   LICENSE       package-lock.json  README_en_US.md  [0m[01;34mscripts[0m  typescript
+CHANGE_LOGS.md              gulpfile.js  package.json  pom.xml            README.md        [01;34msrc[0m      webpack.config.js
+[root@VM-0-15-centos solo]# git status
+# On branch master
+nothing to commit, working directory clean
+[root@VM-0-15-centos solo]# i[Kgit push -u origin master
+Username for 'http://172.16.0.15:8888': root
+Password for 'http://root@172.16.0.15:8888': 
+To http://172.16.0.15:8888/root/myrepo.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'http://172.16.0.15:8888/root/myrepo.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first merge the remote changes (e.g.,
+hint: 'git pull') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+[root@VM-0-15-centos solo]# git remote -v 
+origin	http://172.16.0.15:8888/root/myrepo.git (fetch)
+origin	http://172.16.0.15:8888/root/myrepo.git (push)
+[root@VM-0-15-centos solo]# git remote -v push -u origin master[C[1P[1P[1P
+Username for 'http://172.16.0.15:8888': root
+Password for 'http://root@172.16.0.15:8888': 
+To http://172.16.0.15:8888/root/myrepo.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'http://172.16.0.15:8888/root/myrepo.git'
+hint: Updates were rejected because the remote contains work that you do
+hint: not have locally. This is usually caused by another repository pushing
+hint: to the same ref. You may want to first merge the remote changes (e.g.,
+hint: 'git pull') before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+[root@VM-0-15-centos solo]# git push origin master[Kgit push origin master[Kgit push origin master
+Username for 'http://172.16.0.15:8888': root
+Password for 'http://root@172.16.0.15:8888': 
+To http://172.16.0.15:8888/root/myrepo.git
+ ! [rejected]        master -> master (fetch first)
+error: failed to push some refs to 'http://172.16.0.15:8888/root/myrepo.git'
+hint: Updates were 
